@@ -79,7 +79,7 @@ class Node:
          For a given feature greedily calculates the gain at each split.
          Globally updates the best score and split point if a better split point is found
         '''
-        x = self.x.values[self.idxs, var_idx]
+        x = self.x[self.idxs, var_idx]
         
         for r in range(self.row_count):
             lhs = x <= x[r]
@@ -104,7 +104,7 @@ class Node:
         Is an approximation to the eact greedy approach faster for bigger datasets wher it is not feasible
         to calculate the gain at every split point. Uses equation (8) and (9) from "XGBoost: A Scalable Tree Boosting System"
         '''
-        x = self.x.values[self.idxs, var_idx]
+        x = self.x[self.idxs, var_idx]
         hessian_ = self.hessian[self.idxs]
         df = pd.DataFrame({'feature':x,'hess':hessian_})
         
@@ -157,7 +157,7 @@ class Node:
         '''
         splits a column 
         '''
-        return self.x.values[self.idxs , self.var_idx]
+        return self.x[self.idxs , self.var_idx]
                 
     @property
     def is_leaf(self):
@@ -208,7 +208,7 @@ class XGBoostTree:
         return self
     
     def predict(self, X):
-        return self.dtree.predict(X.values)
+        return self.dtree.predict(X)
    
    
 class XGBoostClassifier:
@@ -262,7 +262,7 @@ class XGBoostClassifier:
     
     
     def fit(self, X, y, subsample_cols = 0.8 , min_child_weight = 1, depth = 5, min_leaf = 5, learning_rate = 0.4, boosting_rounds = 5, lambda_ = 1.5, gamma = 1, eps = 0.1):
-        self.X, self.y = X, y.values
+        self.X, self.y = X, y
         self.depth = depth
         self.subsample_cols = subsample_cols
         self.eps = eps
@@ -345,7 +345,7 @@ class XGBoostRegressor:
     
     
     def fit(self, X, y, subsample_cols = 0.8 , min_child_weight = 1, depth = 5, min_leaf = 5, learning_rate = 0.4, boosting_rounds = 5, lambda_ = 1.5, gamma = 1, eps = 0.1):
-        self.X, self.y = X, y.values
+        self.X, self.y = X, y
         self.depth = depth
         self.subsample_cols = subsample_cols
         self.eps = eps
