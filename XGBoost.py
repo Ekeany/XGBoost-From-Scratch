@@ -371,4 +371,4 @@ class XGBoostRegressor:
         for estimator in self.estimators:
             pred += self.learning_rate * estimator.predict(X) 
           
-        return np.full((X.shape[0], 1), np.mean(y)).flatten().astype('float64') + pred
+        return np.full((X.shape[0], 1), np.mean(self.y)).flatten().astype('float64') + pred
